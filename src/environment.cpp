@@ -78,9 +78,17 @@ void simpleHighway(pcl::visualization::PCLVisualizer::Ptr& viewer)
     std::vector<Color> colors = {Color(1,0,0), Color(0,1,0), Color(0,0,1)};
     for (pcl::PointCloud<pcl::PointXYZ>::Ptr cluster: clusters_cloud)
     {
+        // render cluster point cloud
         renderPointCloud(viewer, cluster, "obstacle_cloud "+std::to_string(cluster_id), colors[cluster_id]);
+
+        // render box
+        Box box = point_processor->BoundingBox(cluster);
+        renderBox(viewer, box, cluster_id, colors[cluster_id], 1);
+
         cluster_id++;
     }
+
+
 
 }
 
