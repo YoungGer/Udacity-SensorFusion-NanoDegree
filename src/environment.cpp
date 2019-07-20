@@ -99,10 +99,50 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer)
     pcl::PointCloud<pcl::PointXYZI>::Ptr input_cloud = point_processor->loadPcd("../src/sensors/data/pcd/data_1/0000000000.pcd");
 
     // filter cloud using voxel
-    pcl::PointCloud<pcl::PointXYZI>::Ptr filterCloud = point_processor->FilterCloud(input_cloud, 0.1, Eigen::Vector4f (-30, -30, -20, -100), Eigen::Vector4f (30, 30, 100, 100));
+    Eigen::Vector4f minPoint (-30, -6.5, -3, 1);
+    Eigen::Vector4f maxPoint (30, 6.5, 10, 1);
+    pcl::PointCloud<pcl::PointXYZI>::Ptr filterCloud = point_processor->FilterCloud(input_cloud, 0.2, minPoint, maxPoint);
+    std::cout << "org size: " << input_cloud->width * input_cloud->height << endl;
+    std::cout << "filtered size: " << filterCloud->width * filterCloud->height << endl;
+
+    // segment cloud into road and obstacles
+    // first obstacle, second road plane
+    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> seg_result_pair = point_processor->SegmentPlane(filterCloud, 100, 0.2);
+
+    // // cluster
+    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters_cloud = point_processor->Clustering(seg_result_pair.first, 1.0, 3, 5000);
+
+    // render plane
+    renderPointCloud(viewer, seg_result_pair.second, "plane", Color(1,1,0));
+
+    // render obstacle
+    // renderPointCloud(viewer, seg_result_pair.first, "obstacle", Color(1,0,0));
+    int cluster_id = 0;
+    std::vector<Color> colors = {Color(1,0,0), Color(0,1,0), Color(0,0,1)};
+    for (pcl::PointCloud<pcl::PointXYZI>::Ptr cluster: clusters_cloud)
+    {
+        // render cluster point cloud
+        renderPointCloud(viewer, cluster, "obstacle_cloud "+std::to_string(cluster_id), colors[cluster_id]);
+
+        // render box
+        Box box = point_processor->BoundingBox(cluster);
+        renderBox(viewer, box, cluster_id, Color(1,0,0), 1);
+
+        cluster_id++;
+    }
+
+    // render box
+    // Box box;
+    // box.x_min = minPoint(0);
+    // box.y_min = minPoint(1);
+    // box.z_min = minPoint(2);
+    // box.x_max = maxPoint(0);
+    // box.y_max = maxPoint(1);
+    // box.z_max = maxPoint(2);
+    // renderBox(viewer, box, 0, Color(1,0,1), 1);    
 
     // render cloud
-    renderPointCloud(viewer, filterCloud, "input_cloud");
+    // renderPointCloud(viewer, filterCloud, "input_cloud");
 }
 
 
