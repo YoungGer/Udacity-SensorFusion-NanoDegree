@@ -12,6 +12,7 @@
 // Arguments:
 // window is the region to draw box around
 // increase zoom to see more of the area
+
 pcl::visualization::PCLVisualizer::Ptr initScene(Box window, int zoom);
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr CreateData(std::vector<std::vector<float>> points);

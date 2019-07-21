@@ -101,12 +101,12 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
 
     // segment cloud into road and obstacles
     // first obstacle, second road plane
-    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> seg_result_pair = point_processor->RansacPlane(filterCloud, 100, 0.3);
     //std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> seg_result_pair = point_processor->SegmentPlane (filterCloud, 100, 0.3);
-
-    // // cluster
-    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters_cloud = point_processor->Clustering(seg_result_pair.first, 0.6, 10, 5000);
-    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters_cloud = point_processor->Clustering(seg_result_pair.first, 0.6, 10, 5000);
+    std::pair<pcl::PointCloud<pcl::PointXYZI>::Ptr, pcl::PointCloud<pcl::PointXYZI>::Ptr> seg_result_pair = point_processor->RansacPlane(filterCloud, 100, 0.3);
+    
+    // cluster
+    // std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters_cloud = point_processor->Clustering(seg_result_pair.first, 0.6, 10, 5000);
+    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters_cloud = point_processor->Clustering_UD(seg_result_pair.first, 0.6, 10, 5000);
 
     // render plane
     renderPointCloud(viewer, seg_result_pair.second, "plane", Color(1,1,0));
@@ -186,8 +186,8 @@ int main (int argc, char** argv)
     pcl::PointCloud<pcl::PointXYZI>::Ptr input_cloud;
     
     // stream process
-    // while (!viewer->wasStopped ())
-    // {
+    while (!viewer->wasStopped ())
+    {
         // clear viewer
         viewer->removeAllPointClouds();
         viewer->removeAllShapes();
@@ -203,5 +203,5 @@ int main (int argc, char** argv)
             stream_iter = stream.begin();
 
         viewer->spinOnce ();
-    //} 
+    }
 }

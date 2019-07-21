@@ -257,6 +257,57 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
     std::cout << "clustering took " << elapsedTime.count() << " milliseconds and found " << clusters.size() << " clusters" << std::endl;
 
     return clusters;
+
+}
+
+
+template<typename PointT>
+std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::Clustering_UD(typename pcl::PointCloud<PointT>::Ptr cloud, float clusterTolerance, int minSize, int maxSize)
+{
+
+    // Time clustering process
+    auto startTime = std::chrono::steady_clock::now();
+
+    std::vector<typename pcl::PointCloud<PointT>::Ptr> clusters;
+
+    // kd tree
+    KdTree* tree = new KdTree;
+    std::vector<std::vector<float>> points;
+    for (int i=0; i<cloud->points.size(); i++)
+    {
+        PointT point = cloud->points[i];
+        
+        std::vector<float> point_vector;
+        point_vector.push_back(point.x);
+        point_vector.push_back(point.y);
+        point_vector.push_back(point.z);
+
+        tree->insert(point_vector, i); 
+        points.push_back(point_vector);
+    }
+
+    // cluster
+    std::vector<std::vector<int>> clusters_idx = euclideanCluster(points, tree, clusterTolerance);
+
+    for(std::vector<int> cluster_idx : clusters_idx)
+    {
+        typename pcl::PointCloud<PointT>::Ptr clusterCloud(new pcl::PointCloud<PointT>());
+        for (int indice: cluster_idx)
+        {
+            clusterCloud->points.push_back(cloud->points[indice]);
+        }
+        clusterCloud->width = clusterCloud->points.size();
+        clusterCloud->height = 1;
+        clusterCloud->is_dense = true;
+        if ((clusterCloud->width >= minSize) and (clusterCloud->width <= maxSize))
+            clusters.push_back(clusterCloud);
+    }
+
+    auto endTime = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+    std::cout << "clustering took " << elapsedTime.count() << " milliseconds and found " << clusters.size() << " clusters" << std::endl;
+
+    return clusters;
 }
 
 
