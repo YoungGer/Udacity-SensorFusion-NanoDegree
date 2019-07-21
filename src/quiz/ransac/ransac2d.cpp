@@ -1,11 +1,6 @@
 /* \author Aaron Brown */
 // Quiz on implementing simple RANSAC line fitting
-
-#include "../../render/render.h"
-#include <unordered_set>
-#include "../../processPointClouds.h"
-// using templates for processPointClouds so also include .cpp to help linker
-#include "../../processPointClouds.cpp"
+#include "ransac2d.h"
 
 pcl::PointCloud<pcl::PointXYZ>::Ptr CreateData()
 {
@@ -109,10 +104,11 @@ std::unordered_set<int> Ransac(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int ma
 
 }
 
-
-std::unordered_set<int> RansacPlane(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int maxIterations, float distanceTol)
+template<typename PointT>  
+std::unordered_set<int> RansacPlane(typename pcl::PointCloud<PointT>::Ptr cloud, int maxIterations, float distanceTol)
 {
   std::unordered_set<int> inliersResult;
+
   srand(time(NULL));
   
   // TODO: Fill in this function
@@ -179,7 +175,7 @@ int main ()
 
   // Create data 3d for plane fit
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud = CreateData3D();
-  std::unordered_set<int> inliers = RansacPlane(cloud, 50, 0.5);
+  std::unordered_set<int> inliers = RansacPlane<pcl::PointXYZ>(cloud, 50, 0.5);
 
 	pcl::PointCloud<pcl::PointXYZ>::Ptr  cloudInliers(new pcl::PointCloud<pcl::PointXYZ>());
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloudOutliers(new pcl::PointCloud<pcl::PointXYZ>());
