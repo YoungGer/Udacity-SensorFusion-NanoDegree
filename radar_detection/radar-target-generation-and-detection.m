@@ -96,6 +96,7 @@ plot(Mix(1:1000:end));
 %reshape the vector into Nr*Nd array. Nr and Nd here would also define the size of
 %Range and Doppler FFT respectively.
 Mix_reshape = reshape(Mix, Nr, Nd);
+
  % *%TODO* :
 %run the FFT on the beat signal along the range bins dimension (Nr) and
 %normalize.
