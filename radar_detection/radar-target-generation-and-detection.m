@@ -159,13 +159,18 @@ figure,surf(doppler_axis,range_axis,RDM);
 
 % *%TODO* :
 %Select the number of Training Cells in both the dimensions.
+Tr = 10;
+Td = 8;
 
 % *%TODO* :
 %Select the number of Guard Cells in both dimensions around the Cell under 
 %test (CUT) for accurate estimation
+Gr = 4;
+Gd = 4;
 
 % *%TODO* :
 % offset the threshold by SNR value in dB
+offset = 1.4;
 
 % *%TODO* :
 %Create a vector to store noise_level for each iteration on training cells
@@ -186,7 +191,34 @@ noise_level = zeros(1,1);
 
    % Use RDM[x,y] as the matrix from the output of 2D FFT for implementing
    % CFAR
+ 
+RDM = RDM/max(max(RDM));
 
+for i = Tr+Gr+1:(Nr/2)-(Gr+Tr)
+    for j = Td+Gd+1:Nd-(Gd+Td)
+       
+        noise_level = zeros(1,1);
+        
+        for p = i-(Tr+Gr) : i+(Tr+Gr)
+            for q = j-(Td+Gd) : j+(Td+Gd)
+                if (abs(i-p) > Gr || abs(j-q) > Gd)
+                    noise_level = noise_level + db2pow(RDM(p,q));
+                end
+            end
+        end
+        
+        threshold = pow2db(noise_level/(2*(Td+Gd+1)*2*(Tr+Gr+1)-(Gr*Gd)-1));
+        threshold = threshold + offset;
+        CUT = RDM(i,j);
+        
+        if (CUT < threshold)
+            RDM(i,j) = 0;
+        else
+            RDM(i,j) = 1;
+        end
+        
+    end
+end
 
 
 
@@ -196,19 +228,15 @@ noise_level = zeros(1,1);
 %than the Range Doppler Map as the CUT cannot be located at the edges of
 %matrix. Hence,few cells will not be thresholded. To keep the map size same
 % set those values to 0. 
- 
-
-
-
-
-
+RDM(union(1:(Tr+Gr), end-(Tr+Gr-1):end), :) = 0;  % rows
+RDM(:, union(1:(Td+Gd), end-(Td+Gd-1):end)) = 0;  % columns 
 
 
 
 % *%TODO* :
 %display the CFAR output using the Surf function like we did for Range
 %Doppler Response output.
-figure,surf(doppler_axis,range_axis,'replace this with output');
+figure,surf(doppler_axis,range_axis,RDM);
 colorbar;
 
 
