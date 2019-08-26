@@ -11,14 +11,15 @@ clc;
 fc = 77e9;
 range_max = 200;
 range_resolution = 1;
+max_velocity = 100;
 c = 3e8;
 
 %% User Defined Range and Velocity of target
 % *%TODO* :
 % define the target's initial position and velocity. Note : Velocity
 % remains contant
-pos0 = 50;
-v0 = 30;
+pos0 = 50;  % target initial position
+v0 = 30;    % target velocity
 
 
 %% FMCW Waveform Generation
@@ -65,14 +66,14 @@ for i=1:length(t)
     
     % *%TODO* :
     %For each time stamp update the Range of the Target for constant velocity. 
-    r_ti = v0 * i;
-    tdi = 2 * r_ti / c;
+    r_t(i) = pos0 + v0 * t(i);
+    td(i) = 2 * r_t(i) / c;
     
     % *%TODO* :
     %For each time sample we need update the transmitted and
     %received signal. 
-    Tx(i) = cos(2 * pi * (fc*i + k*i^2/2));
-    Rx(i) = cos(2 * pi * (fc*(i-tdi) + k*i-(tdi)^2/2));
+    Tx(i) = cos(2 * pi * (fc*t(i) + k*t(i)^2/2));
+    Rx(i) = cos(2 * pi * (fc*(t(i)-td(i)) + k*(t(i)-td(i))^2/2));
     
     % *%TODO* :
     %Now by mixing the Transmit and Receive generate the beat signal
