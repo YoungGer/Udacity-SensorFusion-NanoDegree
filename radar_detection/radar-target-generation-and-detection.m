@@ -166,12 +166,7 @@ Gd = 4;
 
 % *%TODO* :
 % offset the threshold by SNR value in dB
-offset = 1.4;
-
-% *%TODO* :
-%Create a vector to store noise_level for each iteration on training cells
-noise_level = zeros(1,1);
-
+offset = 1.2;
 
 % *%TODO* :
 %design a loop such that it slides the CUT across range doppler map by
@@ -215,7 +210,6 @@ for i = Tr+Gr+1:(Nr/2)-(Gr+Tr)
         
     end
 end
-
 
 
 
