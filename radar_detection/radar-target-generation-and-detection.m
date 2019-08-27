@@ -159,8 +159,8 @@ figure,surf(doppler_axis,range_axis,RDM);
 
 % *%TODO* :
 %Select the number of Training Cells in both the dimensions.
-Tr = 10;
-Td = 8;
+Tr = 12;
+Td = 10;
 
 % *%TODO* :
 %Select the number of Guard Cells in both dimensions around the Cell under 
@@ -228,10 +228,9 @@ end
 %than the Range Doppler Map as the CUT cannot be located at the edges of
 %matrix. Hence,few cells will not be thresholded. To keep the map size same
 % set those values to 0. 
-RDM(union(1:(Tr+Gr), end-(Tr+Gr-1):end), :) = 0;  % rows
-RDM(:, union(1:(Td+Gd), end-(Td+Gd-1):end)) = 0;  % columns 
-
-
+[lr, lc] = size(RDM);
+RDM(union(1:(Tr+Gr), lr-(Tr+Gr-1):lr), :) = 0;  % rows
+RDM(:, union(1:(Td+Gd), lc-(Td+Gd-1):lc)) = 0;  % columns 
 
 % *%TODO* :
 %display the CFAR output using the Surf function like we did for Range
