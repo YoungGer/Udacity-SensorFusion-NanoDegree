@@ -31,10 +31,6 @@ v0 = 30;    % target velocity
 B_sweep = c / (2 * range_resolution); % bandwidth
 Tchirp = 5.5 * 2 * range_max / c; % chirp time
 k = B_sweep / Tchirp; 
-
-%Operating carrier frequency of Radar 
-fc= 77e9;             %carrier freq
-
                                                           
 %The number of chirps in one sequence. Its ideal to have 2^ value for the ease of running the FFT
 %for Doppler Estimation. 
