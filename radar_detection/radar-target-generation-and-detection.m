@@ -11,14 +11,15 @@ clc;
 fc = 77e9;
 range_max = 200;
 range_resolution = 1;
+max_velocity = 100;
 c = 3e8;
 
 %% User Defined Range and Velocity of target
 % *%TODO* :
 % define the target's initial position and velocity. Note : Velocity
 % remains contant
-pos0 = 50;
-v0 = 30;
+pos0 = 50;  % target initial position
+v0 = 30;    % target velocity
 
 
 %% FMCW Waveform Generation
@@ -30,10 +31,6 @@ v0 = 30;
 B_sweep = c / (2 * range_resolution); % bandwidth
 Tchirp = 5.5 * 2 * range_max / c; % chirp time
 k = B_sweep / Tchirp; 
-
-%Operating carrier frequency of Radar 
-fc= 77e9;             %carrier freq
-
                                                           
 %The number of chirps in one sequence. Its ideal to have 2^ value for the ease of running the FFT
 %for Doppler Estimation. 
@@ -65,14 +62,14 @@ for i=1:length(t)
     
     % *%TODO* :
     %For each time stamp update the Range of the Target for constant velocity. 
-    r_ti = v0 * i;
-    tdi = 2 * r_ti / c;
+    r_t(i) = pos0 + v0 * t(i);
+    td(i) = 2 * r_t(i) / c;
     
     % *%TODO* :
     %For each time sample we need update the transmitted and
     %received signal. 
-    Tx(i) = cos(2 * pi * (fc*i + k*i^2/2));
-    Rx(i) = cos(2 * pi * (fc*(i-tdi) + k*i-(tdi)^2/2));
+    Tx(i) = cos(2 * pi * (fc*t(i) + k*t(i)^2/2));
+    Rx(i) = cos(2 * pi * (fc*(t(i)-td(i)) + k*(t(i)-td(i))^2/2));
     
     % *%TODO* :
     %Now by mixing the Transmit and Receive generate the beat signal
@@ -100,15 +97,17 @@ Mix_reshape = reshape(Mix, Nr, Nd);
  % *%TODO* :
 %run the FFT on the beat signal along the range bins dimension (Nr) and
 %normalize.
-
+sig_fft1 = fft(Mix_reshape, Nr);
+sig_fft1 = sig_fft1 ./ Nr;
 
  % *%TODO* :
 % Take the absolute value of FFT output
+sig_fft1 = abs(sig_fft1);
 
  % *%TODO* :
 % Output of FFT is double sided signal, but we are interested in only one side of the spectrum.
 % Hence we throw out half of the samples.
-
+sig_fft1_clip = sig_fft1(1:Nr/2);
 
 %plotting the range
 figure ('Name','Range from First FFT')
@@ -116,8 +115,7 @@ subplot(2,1,1)
 
  % *%TODO* :
  % plot FFT output 
-
- 
+plot(sig_fft1_clip); 
 axis ([0 200 0 1]);
 
 
@@ -157,18 +155,18 @@ figure,surf(doppler_axis,range_axis,RDM);
 
 % *%TODO* :
 %Select the number of Training Cells in both the dimensions.
+Tr = 12;
+Td = 10;
 
 % *%TODO* :
 %Select the number of Guard Cells in both dimensions around the Cell under 
 %test (CUT) for accurate estimation
+Gr = 4;
+Gd = 4;
 
 % *%TODO* :
 % offset the threshold by SNR value in dB
-
-% *%TODO* :
-%Create a vector to store noise_level for each iteration on training cells
-noise_level = zeros(1,1);
-
+offset = 1.2;
 
 % *%TODO* :
 %design a loop such that it slides the CUT across range doppler map by
@@ -184,8 +182,34 @@ noise_level = zeros(1,1);
 
    % Use RDM[x,y] as the matrix from the output of 2D FFT for implementing
    % CFAR
+ 
+RDM = RDM/max(max(RDM));
 
-
+for i = Tr+Gr+1:(Nr/2)-(Gr+Tr)
+    for j = Td+Gd+1:Nd-(Gd+Td)
+       
+        noise_level = zeros(1,1);
+        
+        for p = i-(Tr+Gr) : i+(Tr+Gr)
+            for q = j-(Td+Gd) : j+(Td+Gd)
+                if (abs(i-p) > Gr || abs(j-q) > Gd)
+                    noise_level = noise_level + db2pow(RDM(p,q));
+                end
+            end
+        end
+        
+        threshold = pow2db(noise_level/(2*(Td+Gd+1)*2*(Tr+Gr+1)-(Gr*Gd)-1));
+        threshold = threshold + offset;
+        CUT = RDM(i,j);
+        
+        if (CUT < threshold)
+            RDM(i,j) = 0;
+        else
+            RDM(i,j) = 1;
+        end
+        
+    end
+end
 
 
 
@@ -194,19 +218,14 @@ noise_level = zeros(1,1);
 %than the Range Doppler Map as the CUT cannot be located at the edges of
 %matrix. Hence,few cells will not be thresholded. To keep the map size same
 % set those values to 0. 
- 
-
-
-
-
-
-
-
+[lr, lc] = size(RDM);
+RDM(union(1:(Tr+Gr), lr-(Tr+Gr-1):lr), :) = 0;  % rows
+RDM(:, union(1:(Td+Gd), lc-(Td+Gd-1):lc)) = 0;  % columns 
 
 % *%TODO* :
 %display the CFAR output using the Surf function like we did for Range
 %Doppler Response output.
-figure,surf(doppler_axis,range_axis,'replace this with output');
+figure,surf(doppler_axis,range_axis,RDM);
 colorbar;
 
 
