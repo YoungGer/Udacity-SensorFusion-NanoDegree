@@ -48,10 +48,25 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
 
         extractor = cv::BRISK::create(threshold, octaves, patternScale);
     }
+    // BRIEF, ORB, FREAK, AKAZE, SIFT
+    else if (descriptorType.compare("BRIEF") == 0) {
+        extractor = cv::xfeatures2d::BriefDescriptorExtractor::create();   
+    }
+    else if (descriptorType.compare("ORB") == 0) {
+        extractor = cv::ORB::create();   
+    }
+    else if (descriptorType.compare("FREAK") == 0) {
+        extractor = cv::xfeatures2d::FREAK::create();   
+    }
+    else if (descriptorType.compare("AKAZE") == 0) {
+        extractor = cv::AKAZE::create();   
+    }
+    else if (descriptorType.compare("SIFT") == 0) {
+        extractor = cv::xfeatures2d::SIFT::create();   
+    }
     else
     {
-
-        //...
+        std::cout << "Invalid keypoints descriptor.\n";
     }
 
     // perform feature description
