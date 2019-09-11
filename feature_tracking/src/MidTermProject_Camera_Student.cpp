@@ -64,6 +64,12 @@ int main(int argc, const char *argv[])
         frame.cameraImg = imgGray;
         dataBuffer.push_back(frame);
 
+        // erase first data in order to keep fix dataBufferSize size
+        if (dataBuffer.size() > dataBufferSize)
+        {
+            dataBuffer.erase(dataBuffer.begin());
+        }
+
         //// EOF STUDENT ASSIGNMENT
         cout << "#1 : LOAD IMAGE INTO BUFFER done" << endl;
 
