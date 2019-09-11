@@ -103,7 +103,7 @@ void detKeypointsShiTomasi(vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool b
 }
 
 // Detect keypoints in image using Harris detector
-void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis=false)
+void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
 
     // Detector parameters
@@ -176,10 +176,10 @@ void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool
 }
 
 // Detect keypoints in image using FAST, BRISK, ORB, AKAZE, SIFT detector
-void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::string detectorType, bool bVis=false)
+void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::string detectorType, bool bVis)
 {
     // assign detector
-    cv::Ptr<cv::FeatureDetector> detector
+    cv::Ptr<cv::FeatureDetector> detector;
     if (detectorType.compare("FAST") == 0)
     {
         detector = cv::FastFeatureDetector::create(30, true, cv::FastFeatureDetector::TYPE_9_16);
@@ -206,8 +206,8 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
     }
 
     // detect
-    t = (double)cv::getTickCount();
-    detector->detect(imgGray, keypoints);
+    double t = (double)cv::getTickCount();
+    detector->detect(img, keypoints);
     t = ((double)cv::getTickCount() - t) / cv::getTickFrequency();
     cout << detectorType << " with n= " << keypoints.size() << " keypoints in " << 1000 * t / 1.0 << " ms" << endl;
 
