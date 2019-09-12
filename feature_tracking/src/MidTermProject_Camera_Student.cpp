@@ -137,14 +137,18 @@ int main(int argc, const char *argv[])
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (bFocusOnVehicle)
         {
+            vector<cv::KeyPoint> keypoints_roi;
             for (auto it = keypoints.begin(); it < keypoints.end(); it++)
             {
-                if (!vehicleRect.contains(it->pt))
+                if (vehicleRect.contains(it->pt))
                 {
-                    keypoints.erase(it);
+                    cv::KeyPoint new_pnt;
+                    new_pnt.pt = cv::Point2f(it->pt);
+                    new_pnt.size = 1;
+                    keypoints_roi.push_back(new_pnt);
                 }
             }
-
+            keypoints = keypoints_roi;
         }
         all_kpts_cnt += keypoints.size();
 
@@ -220,8 +224,8 @@ int main(int argc, const char *argv[])
                 string windowName = "Matching keypoints between two camera images";
                 cv::namedWindow(windowName, 7);
                 cv::imshow(windowName, matchImg);
-                //cout << "Press key to continue to next image" << endl;
-                //cv::waitKey(0); // wait for key to be pressed
+                cout << "Press key to continue to next image" << endl;
+                cv::waitKey(0); // wait for key to be pressed
             }
             bVis = false;
         }

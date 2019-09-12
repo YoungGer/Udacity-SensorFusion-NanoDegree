@@ -1,26 +1,26 @@
 1
 SHITOMASI + BRISK
-All keypoints: 7008
-All matched keypoints: 2255
-All time: 2367.18 ms
+All keypoints: 1179
+All matched keypoints: 767
+All time: 2291.16 ms
 ----------------
 2
 SHITOMASI + BRIEF
-All keypoints: 7008
-All matched keypoints: 3234
-All time: 188.709 ms
+All keypoints: 1179
+All matched keypoints: 944
+All time: 125.191 ms
 ----------------
 3
 SHITOMASI + ORB
-All keypoints: 7008
-All matched keypoints: 2856
-All time: 184.334 ms
+All keypoints: 1179
+All matched keypoints: 908
+All time: 126.824 ms
 ----------------
 4
 SHITOMASI + FREAK
-All keypoints: 7008
-All matched keypoints: 2299
-All time: 453.813 ms
+All keypoints: 1179
+All matched keypoints: 768
+All time: 365.967 ms
 ----------------
 5
 terminate called after throwing an instance of 'cv::Exception'
@@ -30,33 +30,33 @@ Aborted (core dumped)
 ----------------
 6
 SHITOMASI + SIFT
-All keypoints: 7008
-All matched keypoints: 3213
-All time: 279.595 ms
+All keypoints: 1179
+All matched keypoints: 788
+All time: 188.365 ms
 ----------------
 7
 HARRIS + BRISK
-All keypoints: 950
-All matched keypoints: 295
-All time: 2331.52 ms
+All keypoints: 248
+All matched keypoints: 142
+All time: 2276.44 ms
 ----------------
 8
 HARRIS + BRIEF
-All keypoints: 950
-All matched keypoints: 396
-All time: 138.666 ms
+All keypoints: 248
+All matched keypoints: 173
+All time: 135.613 ms
 ----------------
 9
 HARRIS + ORB
-All keypoints: 950
-All matched keypoints: 360
-All time: 140.511 ms
+All keypoints: 248
+All matched keypoints: 162
+All time: 139.757 ms
 ----------------
 10
 HARRIS + FREAK
-All keypoints: 950
-All matched keypoints: 290
-All time: 380.519 ms
+All keypoints: 248
+All matched keypoints: 144
+All time: 376.209 ms
 ----------------
 11
 terminate called after throwing an instance of 'cv::Exception'
@@ -66,33 +66,33 @@ Aborted (core dumped)
 ----------------
 12
 HARRIS + SIFT
-All keypoints: 950
-All matched keypoints: 382
-All time: 187.191 ms
+All keypoints: 248
+All matched keypoints: 166
+All time: 212.742 ms
 ----------------
 13
 FAST + BRISK
-All keypoints: 9529
-All matched keypoints: 3170
-All time: 2341.83 ms
+All keypoints: 1491
+All matched keypoints: 899
+All time: 2190.39 ms
 ----------------
 14
 FAST + BRIEF
-All keypoints: 9529
-All matched keypoints: 4904
-All time: 157.541 ms
+All keypoints: 1491
+All matched keypoints: 1099
+All time: 48.353 ms
 ----------------
 15
 FAST + ORB
-All keypoints: 9529
-All matched keypoints: 4254
-All time: 150.617 ms
+All keypoints: 1491
+All matched keypoints: 1071
+All time: 47.8879 ms
 ----------------
 16
 FAST + FREAK
-All keypoints: 9529
-All matched keypoints: 3164
-All time: 446.95 ms
+All keypoints: 1491
+All matched keypoints: 878
+All time: 310.866 ms
 ----------------
 17
 terminate called after throwing an instance of 'cv::Exception'
@@ -102,33 +102,33 @@ Aborted (core dumped)
 ----------------
 18
 FAST + SIFT
-All keypoints: 9529
-All matched keypoints: 5734
-All time: 279.105 ms
+All keypoints: 1491
+All matched keypoints: 924
+All time: 115.162 ms
 ----------------
 19
 BRISK + BRISK
-All keypoints: 14571
-All matched keypoints: 5073
-All time: 4876.98 ms
+All keypoints: 2762
+All matched keypoints: 1471
+All time: 4581.71 ms
 ----------------
 20
 BRISK + BRIEF
-All keypoints: 14571
-All matched keypoints: 7474
-All time: 2660.4 ms
+All keypoints: 2762
+All matched keypoints: 1704
+All time: 2416.18 ms
 ----------------
 21
 BRISK + ORB
-All keypoints: 14571
-All matched keypoints: 5095
-All time: 2680 ms
+All keypoints: 2762
+All matched keypoints: 1675
+All time: 2421.21 ms
 ----------------
 22
 BRISK + FREAK
-All keypoints: 14571
-All matched keypoints: 5008
-All time: 2968.95 ms
+All keypoints: 2762
+All matched keypoints: 1460
+All time: 2691.6 ms
 ----------------
 23
 terminate called after throwing an instance of 'cv::Exception'
@@ -138,33 +138,33 @@ Aborted (core dumped)
 ----------------
 24
 BRISK + SIFT
-All keypoints: 14571
-All matched keypoints: 6934
-All time: 2949.91 ms
+All keypoints: 2762
+All matched keypoints: 1361
+All time: 2495.69 ms
 ----------------
 25
 ORB + BRISK
-All keypoints: 2847
-All matched keypoints: 1378
-All time: 2357.83 ms
+All keypoints: 1161
+All matched keypoints: 553
+All time: 2327.52 ms
 ----------------
 26
 ORB + BRIEF
-All keypoints: 2847
-All matched keypoints: 1403
-All time: 187.967 ms
+All keypoints: 1161
+All matched keypoints: 545
+All time: 176.963 ms
 ----------------
 27
 ORB + ORB
-All keypoints: 2847
-All matched keypoints: 1466
-All time: 207.94 ms
+All keypoints: 1161
+All matched keypoints: 562
+All time: 184.929 ms
 ----------------
 28
 ORB + FREAK
-All keypoints: 2847
-All matched keypoints: 627
-All time: 454.027 ms
+All keypoints: 1161
+All matched keypoints: 512
+All time: 446.59 ms
 ----------------
 29
 terminate called after throwing an instance of 'cv::Exception'
@@ -174,69 +174,69 @@ Aborted (core dumped)
 ----------------
 30
 ORB + SIFT
-All keypoints: 2847
-All matched keypoints: 1578
-All time: 420.538 ms
+All keypoints: 1161
+All matched keypoints: 510
+All time: 245.217 ms
 ----------------
 31
 AKAZE + BRISK
-All keypoints: 7240
-All matched keypoints: 3240
-All time: 2625.62 ms
+All keypoints: 1670
+All matched keypoints: 1193
+All time: 2556.14 ms
 ----------------
 32
 AKAZE + BRIEF
-All keypoints: 7240
-All matched keypoints: 4041
-All time: 461.473 ms
+All keypoints: 1670
+All matched keypoints: 1266
+All time: 436.603 ms
 ----------------
 33
 AKAZE + ORB
-All keypoints: 7240
-All matched keypoints: 3340
-All time: 473.602 ms
+All keypoints: 1670
+All matched keypoints: 1260
+All time: 425.875 ms
 ----------------
 34
 AKAZE + FREAK
-All keypoints: 7240
-All matched keypoints: 3228
-All time: 724.741 ms
+All keypoints: 1670
+All matched keypoints: 1178
+All time: 702.261 ms
 ----------------
 35
-AKAZE + AKAZE
-All keypoints: 7240
-All matched keypoints: 3463
-All time: 706.875 ms
-----------------
-36
-AKAZE + SIFT
-All keypoints: 7240
-All matched keypoints: 3633
-All time: 557.575 ms
-----------------
-37
-SIFT + BRISK
-All keypoints: 7434
-All matched keypoints: 2458
-All time: 2721.3 ms
-----------------
-38
-SIFT + BRIEF
-All keypoints: 7434
-All matched keypoints: 3243
-All time: 663.018 ms
-----------------
-39
 terminate called after throwing an instance of 'cv::Exception'
-  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/core/src/alloc.cpp:72: error: (-4:Insufficient memory) Failed to allocate 70166064384 bytes in function 'OutOfMemoryError'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/features2d/src/kaze/AKAZEFeatures.cpp:1192: error: (-215:Assertion failed) 0 <= kpts[i].class_id && kpts[i].class_id < static_cast<int>(evolution_.size()) in function 'Compute_Descriptors'
 
 Aborted (core dumped)
 ----------------
+36
+AKAZE + SIFT
+All keypoints: 1670
+All matched keypoints: 1082
+All time: 468.205 ms
+----------------
+37
+SIFT + BRISK
+All keypoints: 1387
+All matched keypoints: 565
+All time: 2560.5 ms
+----------------
+38
+SIFT + BRIEF
+All keypoints: 1387
+All matched keypoints: 704
+All time: 617.944 ms
+----------------
+39
+SIFT + ORB
+All keypoints: 1387
+All matched keypoints: 683
+All time: 602.68 ms
+----------------
 40
 SIFT + FREAK
-All keypoints: 7434
-All matched keypoints: 2428
-All time: 944.82 ms
+All keypoints: 1387
+All matched keypoints: 591
+All time: 858.346 ms
 ----------------
 41
 terminate called after throwing an instance of 'cv::Exception'
@@ -246,6 +246,6 @@ Aborted (core dumped)
 ----------------
 42
 SIFT + SIFT
-All keypoints: 7434
-All matched keypoints: 2557
-All time: 918.254 ms
+All keypoints: 1387
+All matched keypoints: 625
+All time: 654.526 ms
