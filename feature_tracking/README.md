@@ -97,4 +97,3 @@ I choose best 3 detector/ descriptor pairs according to the total time.
 |1 | FAST + ORB |1491 |1071 |47.8879 |
 |2 | FAST + BRIEF |1491 |1099 |48.353 |
 |3 | SHITOMASI + BRIEF |1179 |944 |125.191 |
-|3 | FAST + BRISK |17874 |3170 |65.9564 |48.0621 |
