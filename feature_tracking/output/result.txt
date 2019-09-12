@@ -1,0 +1,251 @@
+1
+SHITOMASI + BRISK
+All keypoints: 7008
+All matched keypoints: 2255
+All time: 2367.18 ms
+----------------
+2
+SHITOMASI + BRIEF
+All keypoints: 7008
+All matched keypoints: 3234
+All time: 188.709 ms
+----------------
+3
+SHITOMASI + ORB
+All keypoints: 7008
+All matched keypoints: 2856
+All time: 184.334 ms
+----------------
+4
+SHITOMASI + FREAK
+All keypoints: 7008
+All matched keypoints: 2299
+All time: 453.813 ms
+----------------
+5
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/features2d/src/kaze/AKAZEFeatures.cpp:1192: error: (-215:Assertion failed) 0 <= kpts[i].class_id && kpts[i].class_id < static_cast<int>(evolution_.size()) in function 'Compute_Descriptors'
+
+Aborted (core dumped)
+----------------
+6
+SHITOMASI + SIFT
+All keypoints: 7008
+All matched keypoints: 3213
+All time: 279.595 ms
+----------------
+7
+HARRIS + BRISK
+All keypoints: 950
+All matched keypoints: 295
+All time: 2331.52 ms
+----------------
+8
+HARRIS + BRIEF
+All keypoints: 950
+All matched keypoints: 396
+All time: 138.666 ms
+----------------
+9
+HARRIS + ORB
+All keypoints: 950
+All matched keypoints: 360
+All time: 140.511 ms
+----------------
+10
+HARRIS + FREAK
+All keypoints: 950
+All matched keypoints: 290
+All time: 380.519 ms
+----------------
+11
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/features2d/src/kaze/AKAZEFeatures.cpp:1192: error: (-215:Assertion failed) 0 <= kpts[i].class_id && kpts[i].class_id < static_cast<int>(evolution_.size()) in function 'Compute_Descriptors'
+
+Aborted (core dumped)
+----------------
+12
+HARRIS + SIFT
+All keypoints: 950
+All matched keypoints: 382
+All time: 187.191 ms
+----------------
+13
+FAST + BRISK
+All keypoints: 9529
+All matched keypoints: 3170
+All time: 2341.83 ms
+----------------
+14
+FAST + BRIEF
+All keypoints: 9529
+All matched keypoints: 4904
+All time: 157.541 ms
+----------------
+15
+FAST + ORB
+All keypoints: 9529
+All matched keypoints: 4254
+All time: 150.617 ms
+----------------
+16
+FAST + FREAK
+All keypoints: 9529
+All matched keypoints: 3164
+All time: 446.95 ms
+----------------
+17
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/features2d/src/kaze/AKAZEFeatures.cpp:1192: error: (-215:Assertion failed) 0 <= kpts[i].class_id && kpts[i].class_id < static_cast<int>(evolution_.size()) in function 'Compute_Descriptors'
+
+Aborted (core dumped)
+----------------
+18
+FAST + SIFT
+All keypoints: 9529
+All matched keypoints: 5734
+All time: 279.105 ms
+----------------
+19
+BRISK + BRISK
+All keypoints: 14571
+All matched keypoints: 5073
+All time: 4876.98 ms
+----------------
+20
+BRISK + BRIEF
+All keypoints: 14571
+All matched keypoints: 7474
+All time: 2660.4 ms
+----------------
+21
+BRISK + ORB
+All keypoints: 14571
+All matched keypoints: 5095
+All time: 2680 ms
+----------------
+22
+BRISK + FREAK
+All keypoints: 14571
+All matched keypoints: 5008
+All time: 2968.95 ms
+----------------
+23
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/features2d/src/kaze/AKAZEFeatures.cpp:1192: error: (-215:Assertion failed) 0 <= kpts[i].class_id && kpts[i].class_id < static_cast<int>(evolution_.size()) in function 'Compute_Descriptors'
+
+Aborted (core dumped)
+----------------
+24
+BRISK + SIFT
+All keypoints: 14571
+All matched keypoints: 6934
+All time: 2949.91 ms
+----------------
+25
+ORB + BRISK
+All keypoints: 2847
+All matched keypoints: 1378
+All time: 2357.83 ms
+----------------
+26
+ORB + BRIEF
+All keypoints: 2847
+All matched keypoints: 1403
+All time: 187.967 ms
+----------------
+27
+ORB + ORB
+All keypoints: 2847
+All matched keypoints: 1466
+All time: 207.94 ms
+----------------
+28
+ORB + FREAK
+All keypoints: 2847
+All matched keypoints: 627
+All time: 454.027 ms
+----------------
+29
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/features2d/src/kaze/AKAZEFeatures.cpp:1192: error: (-215:Assertion failed) 0 <= kpts[i].class_id && kpts[i].class_id < static_cast<int>(evolution_.size()) in function 'Compute_Descriptors'
+
+Aborted (core dumped)
+----------------
+30
+ORB + SIFT
+All keypoints: 2847
+All matched keypoints: 1578
+All time: 420.538 ms
+----------------
+31
+AKAZE + BRISK
+All keypoints: 7240
+All matched keypoints: 3240
+All time: 2625.62 ms
+----------------
+32
+AKAZE + BRIEF
+All keypoints: 7240
+All matched keypoints: 4041
+All time: 461.473 ms
+----------------
+33
+AKAZE + ORB
+All keypoints: 7240
+All matched keypoints: 3340
+All time: 473.602 ms
+----------------
+34
+AKAZE + FREAK
+All keypoints: 7240
+All matched keypoints: 3228
+All time: 724.741 ms
+----------------
+35
+AKAZE + AKAZE
+All keypoints: 7240
+All matched keypoints: 3463
+All time: 706.875 ms
+----------------
+36
+AKAZE + SIFT
+All keypoints: 7240
+All matched keypoints: 3633
+All time: 557.575 ms
+----------------
+37
+SIFT + BRISK
+All keypoints: 7434
+All matched keypoints: 2458
+All time: 2721.3 ms
+----------------
+38
+SIFT + BRIEF
+All keypoints: 7434
+All matched keypoints: 3243
+All time: 663.018 ms
+----------------
+39
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/core/src/alloc.cpp:72: error: (-4:Insufficient memory) Failed to allocate 70166064384 bytes in function 'OutOfMemoryError'
+
+Aborted (core dumped)
+----------------
+40
+SIFT + FREAK
+All keypoints: 7434
+All matched keypoints: 2428
+All time: 944.82 ms
+----------------
+41
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.1.1) /home/gy/Downloads/opencv/opencv-4.1.1/modules/features2d/src/kaze/AKAZEFeatures.cpp:1192: error: (-215:Assertion failed) 0 <= kpts[i].class_id && kpts[i].class_id < static_cast<int>(evolution_.size()) in function 'Compute_Descriptors'
+
+Aborted (core dumped)
+----------------
+42
+SIFT + SIFT
+All keypoints: 7434
+All matched keypoints: 2557
+All time: 918.254 ms
