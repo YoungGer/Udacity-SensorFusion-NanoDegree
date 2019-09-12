@@ -34,6 +34,8 @@ See the classroom instruction and code comments for more details on each of thes
 4. Run it: `./2D_feature_tracking`.
 
 # Benchmark
+The example matching result is:
+<img src="images/example.png" width="820" height="180" />
 
 I have created `experiments.py` which loops through all the possible combination of detector and descriptor pairs.
 
