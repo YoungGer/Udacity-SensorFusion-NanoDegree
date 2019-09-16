@@ -139,7 +139,7 @@ int main(int argc, const char *argv[])
         
         
         // REMOVE THIS LINE BEFORE PROCEEDING WITH THE FINAL PROJECT
-        continue; // skips directly to the next image without processing what comes beneath
+        // continue; // skips directly to the next image without processing what comes beneath
 
         /* DETECT IMAGE KEYPOINTS */
 
@@ -248,6 +248,9 @@ int main(int argc, const char *argv[])
                         prevBB = &(*it2);
                     }
                 }
+
+                cout << "currBB lidar pnt size: " << currBB->lidarPoints.size() << endl;
+                cout << "prevBB lidar pnt size: " << prevBB->lidarPoints.size() << endl;
 
                 // compute TTC for current match
                 if( currBB->lidarPoints.size()>0 && prevBB->lidarPoints.size()>0 ) // only compute TTC if we have Lidar points
