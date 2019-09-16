@@ -153,13 +153,20 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
 
     // find closest distance to Lidar points 
     double minXPrev = 1e9, minXCurr = 1e9;
-    for(auto it=lidarPointsPrev.begin(); it!=lidarPointsPrev.end(); ++it) {
-        minXPrev = minXPrev>it->x ? it->x : minXPrev;
-    }
 
-    for(auto it=lidarPointsCurr.begin(); it!=lidarPointsCurr.end(); ++it) {
-        minXCurr = minXCurr>it->x ? it->x : minXCurr;
+    vector<double> prev_vector;
+    for(auto it=lidarPointsPrev.begin(); it!=lidarPointsPrev.end(); ++it) {
+        prev_vector.push_back(it->x);
     }
+    sort(prev_vector.begin(), prev_vector.end());
+    minXPrev = prev_vector[prev_vector.size() * 1 / 5];
+
+    vector<double> curr_vector;
+    for(auto it=lidarPointsCurr.begin(); it!=lidarPointsCurr.end(); ++it) {
+        curr_vector.push_back(it->x);
+    }
+    sort(curr_vector.begin(), curr_vector.end());
+    minXCurr = curr_vector[curr_vector.size() * 1 / 5];
 
     // compute TTC from both measurements
     TTC = minXCurr * dT / (minXPrev-minXCurr);

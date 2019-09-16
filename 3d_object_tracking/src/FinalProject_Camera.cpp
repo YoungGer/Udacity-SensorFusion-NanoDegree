@@ -249,8 +249,8 @@ int main(int argc, const char *argv[])
                     }
                 }
 
-                cout << "currBB lidar pnt size: " << currBB->lidarPoints.size() << endl;
-                cout << "prevBB lidar pnt size: " << prevBB->lidarPoints.size() << endl;
+                //cout << "currBB lidar pnt size: " << currBB->lidarPoints.size() << endl;
+                //cout << "prevBB lidar pnt size: " << prevBB->lidarPoints.size() << endl;
 
                 // compute TTC for current match
                 if( currBB->lidarPoints.size()>0 && prevBB->lidarPoints.size()>0 ) // only compute TTC if we have Lidar points
