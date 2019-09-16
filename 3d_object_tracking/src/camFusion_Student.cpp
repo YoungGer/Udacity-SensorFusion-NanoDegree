@@ -154,5 +154,64 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
 
 void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bbBestMatches, DataFrame &prevFrame, DataFrame &currFrame)
 {
-    // ...
+
+    int prev_box_size = prevFrame.boundingBoxes.size();
+    int curr_box_size = currFrame.boundingBoxes.size();
+    int prev_curr_box_score[prev_box_size][curr_box_size] = {};
+
+    // iterate pnt matchs, cnt box-box match score
+    for (auto it = matches.begin(); it != matches.end() - 1; it++)
+    {
+        // prev pnt
+        cv::KeyPoint prev_key_pnt = prevFrame.keypoints[it->queryIdx];
+        cv::Point prev_pnt = cv::Point(prev_key_pnt.pt.x, prev_key_pnt.pt.y);
+
+        // curr pnt
+        cv::KeyPoint curr_key_pnt = prevFrame.keypoints[it->trainIdx];
+        cv::Point curr_pnt = cv::Point(curr_key_pnt.pt.x, curr_key_pnt.pt.y);
+
+        // get corresponding box with the point
+        std::vector<int> prev_box_id_list, curr_box_id_list;
+        for (int i = 0; i < prev_box_size; ++i)
+        {
+            if (prevFrame.boundingBoxes[i].roi.contains(prev_pnt))
+            {
+                prev_box_id_list.push_back(i);
+            }
+        }
+        for (int j = 0; j < curr_box_size; ++j)
+        {
+            if (currFrame.boundingBoxes[j].roi.contains(curr_pnt))
+            {
+                curr_box_id_list.push_back(j);
+            }
+        }
+
+        // add cnt to prev_curr_box_score
+        for (int i: prev_box_id_list)
+        {
+            for (int j: curr_box_id_list)
+            {
+                prev_curr_box_score[i][j] += 1;
+            }
+        }
+    } // END OF THE PNT MATCH
+
+    // for each box in prevFrame, find the box with highest score in currFrame
+    for (int i = 0; i < prev_box_size; ++i) 
+    {
+        int max_score = 0;
+        int best_idx = 0;
+        
+        for (int j = 0; j < curr_box_size; ++j)
+        {
+            if (prev_curr_box_score[i][j] > max_score)
+            {
+                max_score = prev_curr_box_score[i][j];
+                best_idx = j;
+            }
+        }
+
+        bbBestMatches[i] = best_idx;
+    }
 }
