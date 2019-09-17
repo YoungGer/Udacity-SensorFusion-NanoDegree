@@ -44,7 +44,7 @@ Implement the method "matchBoundingBoxes", which takes as input both the previou
 **Solution:**
 Construct `prev_curr_box_score` which records the frequency / score of box-box pair. Iterate matched key points. If the matched points belong to the bounding box pair, then the corresponding box-box pair score increse by one. Last, for each quiry box, select the train box id which has the biggest score.
 
-```
+```c++
 void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bbBestMatches, DataFrame &prevFrame, DataFrame &currFrame)
 {
 
@@ -120,7 +120,7 @@ In order to deal with the outlier points, only select lidar points within ego la
 
 ttc = d1 * t / (d0 - d1)
 
-```
+```c++
 void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
                      std::vector<LidarPoint> &lidarPointsCurr, double frameRate, double &TTC)
 {
@@ -163,7 +163,7 @@ Prepare the TTC computation based on camera measurements by associating keypoint
 **Solution:**
 First filter key point matches according to the distance to mean match distance. Then associate a given bounding box with the keypoints it contains and the corresponding matches.
 
-```
+```c++
 // associate a given bounding box with the keypoints it contains
 void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr, std::vector<cv::DMatch> &kptMatches)
 {
@@ -213,7 +213,7 @@ Calculate the distance change from previous key point pairs to current matched k
 
 ttc = -t / (1-d1/d0)
 
-```
+```c++
 // Compute time-to-collision (TTC) based on keypoint correspondences in successive images
 void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr,
                       std::vector<cv::DMatch> kptMatches, double frameRate, double &TTC, cv::Mat *visImg)
