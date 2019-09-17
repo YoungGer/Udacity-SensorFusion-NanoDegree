@@ -272,6 +272,16 @@ int main(int argc, const char *argv[])
                     bVis = true;
                     if (bVis)
                     {
+                        // lidar debud
+                        vector<BoundingBox> prev_bb_list = {*prevBB};
+                        show3DObjects(prev_bb_list, cv::Size(4.0, 20.0), cv::Size(1000, 1000), true, "prev_bb");
+                        vector<BoundingBox> curr_bb_list = {*currBB};
+                        show3DObjects(curr_bb_list, cv::Size(4.0, 20.0), cv::Size(1000, 1000), true, "curr_bb");
+
+                        // camera debug
+
+
+                        // normal
                         cv::Mat visImg = (dataBuffer.end() - 1)->cameraImg.clone();
                         showLidarImgOverlay(visImg, currBB->lidarPoints, P_rect_00, R_rect_00, RT, &visImg);
                         cv::rectangle(visImg, cv::Point(currBB->roi.x, currBB->roi.y), cv::Point(currBB->roi.x + currBB->roi.width, currBB->roi.y + currBB->roi.height), cv::Scalar(0, 255, 0), 2);

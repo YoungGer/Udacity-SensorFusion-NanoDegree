@@ -61,7 +61,7 @@ void clusterLidarWithROI(std::vector<BoundingBox> &boundingBoxes, std::vector<Li
 }
 
 
-void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, cv::Size imageSize, bool bWait)
+void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, cv::Size imageSize, bool bWait, string windowName)
 {
     // create topview image
     cv::Mat topviewImg(imageSize, CV_8UC3, cv::Scalar(255, 255, 255));
@@ -73,13 +73,17 @@ void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, 
         cv::Scalar currColor = cv::Scalar(rng.uniform(0,150), rng.uniform(0, 150), rng.uniform(0, 150));
 
         // plot Lidar points into top view image
+        vector<double> x_vector;
         int top=1e8, left=1e8, bottom=0.0, right=0.0; 
-        float xwmin=1e8, ywmin=1e8, ywmax=-1e8;
+        float xwmin=1e8, ywmin=1e8, ywmax=-1e8, xwmin_quantile=1e8;
         for (auto it2 = it1->lidarPoints.begin(); it2 != it1->lidarPoints.end(); ++it2)
         {
             // world coordinates
             float xw = (*it2).x; // world position in m with x facing forward from sensor
             float yw = (*it2).y; // world position in m with y facing left from sensor
+
+            x_vector.push_back(xw);
+
             xwmin = xwmin<xw ? xwmin : xw;
             ywmin = ywmin<yw ? ywmin : yw;
             ywmax = ywmax>yw ? ywmax : yw;
@@ -98,15 +102,20 @@ void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, 
             cv::circle(topviewImg, cv::Point(x, y), 4, currColor, -1);
         }
 
+        // get x quantile mean
+        sort(x_vector.begin(), x_vector.end());
+        xwmin_quantile = x_vector[x_vector.size() * 1 / 5];
+
         // draw enclosing rectangle
         cv::rectangle(topviewImg, cv::Point(left, top), cv::Point(right, bottom),cv::Scalar(0,0,0), 2);
 
         // augment object with some key data
-        char str1[200], str2[200];
+        char str1[200], str2[200], str3[200];
         sprintf(str1, "id=%d, #pts=%d", it1->boxID, (int)it1->lidarPoints.size());
-        putText(topviewImg, str1, cv::Point2f(left-250, bottom+50), cv::FONT_ITALIC, 2, currColor);
-        sprintf(str2, "xmin=%2.2f m, yw=%2.2f m", xwmin, ywmax-ywmin);
-        putText(topviewImg, str2, cv::Point2f(left-250, bottom+125), cv::FONT_ITALIC, 2, currColor);  
+        putText(topviewImg, str1, cv::Point2f(left-250, bottom+50), cv::FONT_ITALIC, 1, currColor);
+        sprintf(str2, "xmin=%2.2f m, xmin_q=%2.2f m, yw=%2.2f m", xwmin, xwmin_quantile, ywmax-ywmin);
+        putText(topviewImg, str2, cv::Point2f(left-250, bottom+125), cv::FONT_ITALIC, 1, currColor);  
+
     }
 
     // plot distance markers
@@ -119,7 +128,6 @@ void show3DObjects(std::vector<BoundingBox> &boundingBoxes, cv::Size worldSize, 
     }
 
     // display image
-    string windowName = "3D Objects";
     cv::namedWindow(windowName, 1);
     cv::imshow(windowName, topviewImg);
 
@@ -204,7 +212,6 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
         } // eof inner loop over all matched kpts
     }     // eof outer loop over all matched kpts
 
-    cout << distRatios.size() << endl;
     // only continue if list of distance ratios is not empty
     if (distRatios.size() == 0)
     {
@@ -248,6 +255,12 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
 
     // compute TTC from both measurements
     TTC = minXCurr * dT / (minXPrev-minXCurr);
+
+    cout << "lidar ttc cal------------------" << endl;
+    cout << "minXPrev: " << minXPrev << endl;
+    cout << "minXCurr: " << minXCurr << endl;
+    cout << "-------------------------------" << endl;
+
 }
 
 
