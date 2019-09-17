@@ -276,7 +276,7 @@ Find examples where the TTC estimate of the Lidar sensor does not seem plausible
 **Solution:**
 There is red light in the front of the ego car. The ego car moves slowly. It only move 0.03 meters in a single step. Small moving distance incurs big fluctuation as denominator.
  
- <img src="image/lidar.png"  width="860" height="520">
+ <img src="images/lidar.png"  width="860" height="520">
 
 
 ### 6. Performance Evaluation 2
@@ -287,4 +287,4 @@ Run several detector / descriptor combinations and look at the differences in TT
 **Solution:**
 There are match points in the ground which violates the assumption that each matched point has same distance to the ego car.
 
- <img src="image/camera.png"  width="860" height="520">
+ <img src="images/camera.png"  width="860" height="520">
