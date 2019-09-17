@@ -42,7 +42,7 @@ In this final project, you will implement the missing parts in the schematic. To
 Implement the method "matchBoundingBoxes", which takes as input both the previous and the current data frames and provides as output the ids of the matched regions of interest (i.e. the boxID property). Matches must be the ones with the highest number of keypoint correspondences.
 
 **Solution:**
-Construct `prev_curr_box_score` which records the frequency / score of box pair. Iterate matched key points. If the matched points belong to the bounding boxs, then the corresponding boxs score increse by one. Last, for each quiry box, select the train box id which has the biggest score.
+Construct `prev_curr_box_score` which records the frequency / score of box-box pair. Iterate matched key points. If the matched points belong to the bounding box pair, then the corresponding box-box pair score increse by one. Last, for each quiry box, select the train box id which has the biggest score.
 
 ```
 void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bbBestMatches, DataFrame &prevFrame, DataFrame &currFrame)
@@ -116,14 +116,92 @@ void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bb
 Compute the time-to-collision in second for all matched 3D objects using only Lidar measurements from the matched bounding boxes between current and previous frame.
 
 **Solution:**
+In order to deal with the outlier points, only select lidar points within ego lane, then use 10% quantile to get stable distance estimation. Finally, use distance estimation to calculate ttc.
+
+ttc = d1 * t / (d0 - d1)
+
+```
+void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
+                     std::vector<LidarPoint> &lidarPointsCurr, double frameRate, double &TTC)
+{
+    // auxiliary variables
+    double dT = 1.0 / frameRate; // time between two measurements in seconds
+
+    // find closest distance to Lidar points 
+    double minXPrev = 1e9, minXCurr = 1e9;
+
+    vector<double> prev_vector;
+    for(auto it=lidarPointsPrev.begin(); it!=lidarPointsPrev.end(); ++it) {
+        prev_vector.push_back(it->x);
+    }
+    sort(prev_vector.begin(), prev_vector.end());
+    minXPrev = prev_vector[prev_vector.size() * 1 / 5];
+
+    vector<double> curr_vector;
+    for(auto it=lidarPointsCurr.begin(); it!=lidarPointsCurr.end(); ++it) {
+        curr_vector.push_back(it->x);
+    }
+    sort(curr_vector.begin(), curr_vector.end());
+    minXCurr = curr_vector[curr_vector.size() * 1 / 5];
+
+    // compute TTC from both measurements
+    TTC = minXCurr * dT / (minXPrev-minXCurr);
+
+    cout << "lidar ttc cal------------------" << endl;
+    cout << "minXPrev: " << minXPrev << endl;
+    cout << "minXCurr: " << minXCurr << endl;
+    cout << "-------------------------------" << endl;
+
+}
+```
 
 ### 3. Associate Keypoint Correspondences with Bounding Boxes
 
 **Criteria:**
 Prepare the TTC computation based on camera measurements by associating keypoint correspondences to the bounding boxes which enclose them. All matches which satisfy this condition must be added to a vector in the respective bounding box.
 
-
 **Solution:**
+First filter key point matches according to the distance to mean match distance. Then associate a given bounding box with the keypoints it contains and the corresponding matches.
+
+```
+// associate a given bounding box with the keypoints it contains
+void clusterKptMatchesWithROI(BoundingBox &boundingBox, std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr, std::vector<cv::DMatch> &kptMatches)
+{
+    // calculate mean point match distance in this bbox
+    double distance_mean = 0.0;
+    double size = 0.0;
+    for (auto it = kptMatches.begin(); it != kptMatches.end(); ++it)
+    {
+        cv::KeyPoint curr_pnt = kptsCurr[it->trainIdx];
+        cv::KeyPoint prev_pnt = kptsPrev[it->queryIdx];
+
+        if (boundingBox.roi.contains(curr_pnt.pt))
+        {
+            distance_mean += cv::norm(curr_pnt.pt - prev_pnt.pt);
+            size += 1;
+        }
+    }
+    distance_mean = distance_mean / size;
+
+    // filter point match based on point match distance
+    for (auto it = kptMatches.begin(); it != kptMatches.end(); ++it)
+    {
+        cv::KeyPoint curr_pnt = kptsCurr[it->trainIdx];
+        cv::KeyPoint prev_pnt = kptsPrev[it->queryIdx];
+
+        if (boundingBox.roi.contains(curr_pnt.pt))
+        {
+            double curr_dist = cv::norm(curr_pnt.pt - prev_pnt.pt);
+
+            if (curr_dist < distance_mean * 1.3)
+            {
+                boundingBox.keypoints.push_back(curr_pnt);
+                boundingBox.kptMatches.push_back(*it);
+            }
+        }
+    }
+}
+```
 
 ### 4. Compute Camera-based TTC
 
@@ -131,6 +209,64 @@ Prepare the TTC computation based on camera measurements by associating keypoint
 Compute the time-to-collision in second for all matched 3D objects using only keypoint correspondences from the matched bounding boxes between current and previous frame.
 
 **Solution:**
+Calculate the distance change from previous key point pairs to current matched key point pairs. The use the formula below to get the camera based ttc.
+
+ttc = -t / (1-d1/d0)
+
+```
+// Compute time-to-collision (TTC) based on keypoint correspondences in successive images
+void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPoint> &kptsCurr,
+                      std::vector<cv::DMatch> kptMatches, double frameRate, double &TTC, cv::Mat *visImg)
+{
+    // compute distance ratios between all matched keypoints
+    vector<double> distRatios; // stores the distance ratios for all keypoints between curr. and prev. frame
+    for (auto it1 = kptMatches.begin(); it1 != kptMatches.end() - 1; ++it1)
+    { // outer kpt. loop
+
+        // get current keypoint and its matched partner in the prev. frame
+        cv::KeyPoint kpOuterCurr = kptsCurr.at(it1->trainIdx);
+        cv::KeyPoint kpOuterPrev = kptsPrev.at(it1->queryIdx);
+
+        for (auto it2 = kptMatches.begin() + 1; it2 != kptMatches.end(); ++it2)
+        { // inner kpt.-loop
+
+            double minDist = 100.0; // min. required distance
+
+            // get next keypoint and its matched partner in the prev. frame
+            cv::KeyPoint kpInnerCurr = kptsCurr.at(it2->trainIdx);
+            cv::KeyPoint kpInnerPrev = kptsPrev.at(it2->queryIdx);
+
+            // compute distances and distance ratios
+            double distCurr = cv::norm(kpOuterCurr.pt - kpInnerCurr.pt);
+            double distPrev = cv::norm(kpOuterPrev.pt - kpInnerPrev.pt);
+
+            if (distPrev > std::numeric_limits<double>::epsilon() && distCurr >= minDist)
+            { // avoid division by zero
+
+                double distRatio = distCurr / distPrev;
+                distRatios.push_back(distRatio);
+            }
+        } // eof inner loop over all matched kpts
+    }     // eof outer loop over all matched kpts
+
+    // only continue if list of distance ratios is not empty
+    if (distRatios.size() == 0)
+    {
+        TTC = NAN;
+        return;
+    }
+
+    // STUDENT TASK (replacement for meanDistRatio)
+    std::sort(distRatios.begin(), distRatios.end());
+    long medIndex = floor(distRatios.size() / 2.0);
+    double medDistRatio = distRatios.size() % 2 == 0 ? (distRatios[medIndex - 1] + distRatios[medIndex]) / 2.0 : distRatios[medIndex]; // compute median dist. ratio to remove outlier influence
+
+    double dT = 1 / frameRate;
+    TTC = -dT / (1 - medDistRatio);
+    // EOF STUDENT TASK
+}
+
+```
 
 ### 5. Performance Evaluation 1
 
@@ -138,6 +274,10 @@ Compute the time-to-collision in second for all matched 3D objects using only ke
 Find examples where the TTC estimate of the Lidar sensor does not seem plausible. Describe your observations and provide a sound argumentation why you think this happened.
 
 **Solution:**
+There is red light in the front of the ego car. The ego car moves slowly. It only move 0.03 meters in a single step. Small moving distance incurs big fluctuation as denominator.
+ 
+ <img src="image/lidar.png"  width="860" height="520">
+
 
 ### 6. Performance Evaluation 2
 
@@ -145,3 +285,6 @@ Find examples where the TTC estimate of the Lidar sensor does not seem plausible
 Run several detector / descriptor combinations and look at the differences in TTC estimation. Find out which methods perform best and also include several examples where camera-based TTC estimation is way off. As with Lidar, describe your observations again and also look into potential reasons.
 
 **Solution:**
+There are match points in the ground which violates the assumption that each matched point has same distance to the ego car.
+
+ <img src="image/camera.png"  width="860" height="520">
