@@ -276,9 +276,9 @@ Find examples where the TTC estimate of the Lidar sensor does not seem plausible
 **Solution:**
 There are three continus frames. The ttc of lidar increases from 12s to 31s, then drops suddenly from 31s to 14s. There is red light in the front of the ego car. The ego car moves slowly. It only moves 0.03 meters from first frame to second frame. Small moving distance incurs big fluctuation as denominator.
  
- <img src="images/s2.png"  width="860" height="520">
- <img src="images/s3.png"  width="860" height="520">
- <img src="images/s4.png"  width="860" height="520">
+ <img src="images/s2.png"  width="860" height="220">
+ <img src="images/s3.png"  width="860" height="220">
+ <img src="images/s4.png"  width="860" height="220">
 
 
 ### 6. Performance Evaluation 2
