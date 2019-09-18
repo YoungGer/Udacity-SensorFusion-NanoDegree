@@ -274,7 +274,7 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 Find examples where the TTC estimate of the Lidar sensor does not seem plausible. Describe your observations and provide a sound argumentation why you think this happened.
 
 **Solution:**
-There are three continus frames. The ttc of lidar increases from 12s to 31s, then drops suddenly from 31s to 14s. There is red light in the front of the ego car. The ego car moves slowly. It only move 0.03 meters from first frame to second frame. Small moving distance incurs big fluctuation as denominator.
+There are three continus frames. The ttc of lidar increases from 12s to 31s, then drops suddenly from 31s to 14s. There is red light in the front of the ego car. The ego car moves slowly. It only moves 0.03 meters from first frame to second frame. Small moving distance incurs big fluctuation as denominator.
  
  <img src="images/s2.png"  width="860" height="520">
  <img src="images/s3.png"  width="860" height="520">
@@ -287,6 +287,30 @@ There are three continus frames. The ttc of lidar increases from 12s to 31s, the
 Run several detector / descriptor combinations and look at the differences in TTC estimation. Find out which methods perform best and also include several examples where camera-based TTC estimation is way off. As with Lidar, describe your observations again and also look into potential reasons.
 
 **Solution:**
+
+In the mid-term project, the top 3 detector/descriptor has been seletected in terms of their performance on accuracy and speed. So here, we use them one by one for Camera TTC estimate.
+
+|Sr. No. | Detector + Descriptor |
+|:---:|:---:|
+|1 | FAST + ORB |
+|2 | FAST + BRIEF |
+|3 | SHITOMASI + BRIEF |
+
+The TTC estimation results are:
+|Sr. No. | lidar | FAST + ORB | FAST + BRIEF |SHITOMASI + BRIEF |
+|:---:|:---:|:---:|:---:|:---:|
+|1 | | | | |
+|2 | | | | |
+|3 | | | | |
+|4 | | | | |
+|5 | | | | |
+|6 | | | | |
+|7 | | | | |
+|8 | | | | |
+|9 | | | | |
+|10 | | | | |
+
+
 There are match points in the ground which violates the assumption that each matched point has same distance to the ego car.
 
  <img src="images/camera.png"  width="860" height="520">
