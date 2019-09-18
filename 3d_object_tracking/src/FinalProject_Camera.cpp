@@ -55,6 +55,10 @@ int main(int argc, const char *argv[])
         descriptorType_BIN_HOG = "DES_BINARY";
     }
 
+    cout << "detector: " << detectorType << endl;
+    cout << "descriptor : " << descriptorType << endl;
+    cout << "-----------------------" << endl;
+
     /* INIT VARIABLES AND DATA STRUCTURES */
 
     // data location
@@ -199,11 +203,7 @@ int main(int argc, const char *argv[])
         if (bLimitKpts)
         {
             int maxKeypoints = 50;
-
-            if (detectorType.compare("SHITOMASI") == 0)
-            { // there is no response info, so keep the first 50 as they are sorted in descending quality order
-                keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
-            }
+            keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
             cv::KeyPointsFilter::retainBest(keypoints, maxKeypoints);
             cout << " NOTE: Keypoints have been limited!" << endl;
         }
