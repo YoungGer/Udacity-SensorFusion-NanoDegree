@@ -296,7 +296,7 @@ In the mid-term project, the top 3 detector/descriptor has been seletected in te
 |2 | FAST + BRIEF |
 |3 | SHITOMASI + BRIEF |
 
-The TTC estimation results are:
+The TTC estimation results are shown in the table below.
 
 |Sr. No. | lidar | FAST + ORB | FAST + BRIEF |SHITOMASI + BRIEF |
 |:---:|:---:|:---:|:---:|:---:|
@@ -320,6 +320,7 @@ The TTC estimation results are:
 |18 |10.4 |10.6 |11.6 | 8.4|
 
 
-There are match points in the ground which violates the assumption that each matched point has same distance to the ego car.
+There are matched points in the ground or in other cars which violates the assumption that each matched point has same distance to the ego car. The camera ttc is much unstable compared with lidar ttc.
 
  <img src="images/camera.png"  height="520">
+ <img src="images/camera2.png"  height="520">
