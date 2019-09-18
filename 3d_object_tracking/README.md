@@ -274,9 +274,11 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 Find examples where the TTC estimate of the Lidar sensor does not seem plausible. Describe your observations and provide a sound argumentation why you think this happened.
 
 **Solution:**
-There is red light in the front of the ego car. The ego car moves slowly. It only move 0.03 meters in a single step. Small moving distance incurs big fluctuation as denominator.
+There are three continus frames. The ttc of lidar increases from 12s to 31s, then drops suddenly from 31s to 14s. There is red light in the front of the ego car. The ego car moves slowly. It only moves 0.03 meters from first frame to second frame. Small moving distance incurs big fluctuation as denominator.
  
- <img src="images/lidar.png"  width="860" height="520">
+ <img src="images/s2.png"  width="860" height="220">
+ <img src="images/s3.png"  width="860" height="220">
+ <img src="images/s4.png"  width="860" height="220">
 
 
 ### 6. Performance Evaluation 2
@@ -285,6 +287,40 @@ There is red light in the front of the ego car. The ego car moves slowly. It onl
 Run several detector / descriptor combinations and look at the differences in TTC estimation. Find out which methods perform best and also include several examples where camera-based TTC estimation is way off. As with Lidar, describe your observations again and also look into potential reasons.
 
 **Solution:**
-There are match points in the ground which violates the assumption that each matched point has same distance to the ego car.
 
- <img src="images/camera.png"  width="860" height="520">
+In the mid-term project, the top 3 detector/descriptor has been seletected in terms of their performance on accuracy and speed. So here, we use them one by one for Camera TTC estimate.
+
+|Sr. No. | Detector + Descriptor |
+|:---:|:---:|
+|1 | FAST + ORB |
+|2 | FAST + BRIEF |
+|3 | SHITOMASI + BRIEF |
+
+The TTC estimation results are shown in the table below.
+
+|Sr. No. | lidar | FAST + ORB | FAST + BRIEF |SHITOMASI + BRIEF |
+|:---:|:---:|:---:|:---:|:---:|
+|1 |13.3|11.0 |10.8 | 14.7|
+|2 | 12.5|10.8 |11.0 | 14.0|
+|3 | 31.5|11.4 |14.2 | 9.7|
+|4 |14.5 |12.8 |14.4 | 15.0|
+|5 |10.2 | 17.8|20.0 | 12.8|
+|6 |14.0 |13.0 |13.3 | 13.3|
+|7 | 11.4|11.6 |12.2 | 15.3|
+|8 |14.8 |11.2 |12.8 | 12.1|
+|9 |13.2 |12.1 |12.6 | 11.9|
+|10 |15.2 |13.3 |13.5 | 12.6|
+|11 |11.9 |13.8 |13.7 | 11.9|
+|12 |9.6 |10.9 |11.0 | 11.8|
+|13 |8.9 |12.0 |12.4 | 11.7|
+|14 |9.5 |10.7 |11.2 | 11.4|
+|15 |7.7 |11.2 |11.9 | 12.2|
+|16 |9.2 |11.2 |11.8 | 8.2|
+|17 |11.8 |7.9 |7.9 | 11.1|
+|18 |10.4 |10.6 |11.6 | 8.4|
+
+
+There are matched points in the ground or in other cars which violates the assumption that each matched point has same distance to the ego car. The camera ttc is much unstable compared with lidar ttc.
+
+ <img src="images/camera.png"  height="120">
+ <img src="images/camera2.png"  height="120">
