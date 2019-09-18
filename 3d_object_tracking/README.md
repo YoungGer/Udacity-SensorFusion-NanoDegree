@@ -274,9 +274,11 @@ void computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::KeyPo
 Find examples where the TTC estimate of the Lidar sensor does not seem plausible. Describe your observations and provide a sound argumentation why you think this happened.
 
 **Solution:**
-There is red light in the front of the ego car. The ego car moves slowly. It only move 0.03 meters in a single step. Small moving distance incurs big fluctuation as denominator.
+There are three continus frames. The ttc of lidar increases from 12s to 31s, then drops suddenly from 31s to 14s. There is red light in the front of the ego car. The ego car moves slowly. It only move 0.03 meters from first frame to second frame. Small moving distance incurs big fluctuation as denominator.
  
- <img src="images/lidar.png"  width="860" height="520">
+ <img src="images/s2.png"  width="860" height="520">
+ <img src="images/s3.png"  width="860" height="520">
+ <img src="images/s4.png"  width="860" height="520">
 
 
 ### 6. Performance Evaluation 2
