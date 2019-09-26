@@ -26,6 +26,8 @@ int main(int argc, char** argv)
 	int time_us = 0;
 
 	double egoVelocity = 25;
+	
+	std::cout << "Start" << std::endl;
 
 	while (frame_count < (frame_per_sec*sec_interval))
 	{
